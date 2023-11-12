@@ -1,0 +1,46 @@
+create table Pago(
+Id_Pago int primary key auto_increment,
+Metodo_Pago varchar(50) not null,
+Estado_Pago varchar(50) not null
+);
+
+create table Producto(
+Id_Producto int primary key auto_increment,
+Tipo varchar(50) not null,
+Sabor varchar(50) not null,
+Tamano varchar(50) not null,
+Forma varchar(50) not null,
+Precio numeric not null,
+Id_Pago int not null,
+foreign key (Id_Pago) references Pago(Id_Pago)
+);
+
+create table Pedido(
+Id_Pedido int primary key auto_increment,
+Fecha_Pedido datetime not null,
+Fecha_Entrega datetime not null,
+Id_Producto int not null,
+foreign key (Id_Producto) references Producto(Id_Producto)
+);
+
+create table Direcciones(
+Id_Direccion int primary key auto_increment,
+Calle varchar(50) not null,
+Numero_Exterior numeric not null,
+Numero_Interno numeric,
+Colonia varchar(50) not null,
+Municipio varchar(50) not null,
+Codigo_Postal numeric not null
+);
+
+create table Clientes(
+Id_Cliente int primary key auto_increment,
+Nombre varchar(50) not null,
+Apellido varchar(50) not null,
+Telefono int not null,
+Id_Direccion int not null,
+foreign key (Id_Direccion) references Direcciones(Id_Direccion),
+email varchar(50) not null,
+Id_Pedido int not null,
+foreign key (Id_Pedido) references Pedido(Id_Pedido)
+);
