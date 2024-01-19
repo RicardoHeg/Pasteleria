@@ -1,0 +1,325 @@
+create schema Pasteleria;
+use Pateleria;
+
+/* AQUI EMPIEZA LA CREACION DE LAS TABLAS */
+create table Pago(
+Id_Pago int primary key auto_increment,
+Metodo_Pago varchar(50) not null,
+Estado_Pago varchar(50) not null
+);
+
+create table Producto(
+Id_Producto int primary key auto_increment,
+Tipo varchar(50) not null,
+Sabor varchar(50) not null,
+Tamano varchar(50) not null,
+Forma varchar(50) not null,
+Precio numeric not null,
+Id_Pago int not null,
+foreign key (Id_Pago) references Pago(Id_Pago)
+);
+
+create table Pedido(
+Id_Pedido int primary key auto_increment,
+Fecha_Pedido datetime not null,
+Fecha_Entrega datetime not null,
+Id_Producto int not null,
+foreign key (Id_Producto) references Producto(Id_Producto)
+);
+
+create table Direcciones(
+Id_Direccion int primary key auto_increment,
+Calle varchar(50) not null,
+Numero_Exterior numeric not null,
+Numero_Interno numeric,
+Colonia varchar(50) not null,
+Municipio varchar(50) not null,
+Codigo_Postal numeric not null
+);
+
+create table Clientes(
+Id_Cliente int primary key auto_increment,
+Nombre varchar(50) not null,
+Apellido varchar(50) not null,
+Telefono int not null,
+Id_Direccion int not null,
+foreign key (Id_Direccion) references Direcciones(Id_Direccion),
+email varchar(50) not null,
+Id_Pedido int not null,
+foreign key (Id_Pedido) references Pedido(Id_Pedido)
+);
+
+
+/* AQUI COMIENZA LA INSERCION DE REGISTROS */
+insert into Pago(Metodo_Pago, Estado_Pago) value
+('Efectivo', 'Pendiente'),
+('Tarjeta de Credito', 'Pagado'),
+('Efectivo', 'Pagado'),
+('Efectivo', 'Paga la mitad'),
+('Tarjeta de Debito', 'Pagado'),
+('Efectivo', 'Pagado'),
+('Tarjeta de Credito', 'Pagado'),
+('Efectivo', 'Pendiente'),
+('Efectivo', 'Pendiente'),
+('Efectivo', 'Pagado');
+
+insert into Producto(Tipo, Sabor, Tamano, Forma, Precio, Id_Pago) value
+('Pastel', 'Chocolate', 'Grande', 'Cuadrado', 600, 1),
+('Galletas', 'Vainilla', 'Medianas', 'Esstrella', 800, 2),
+('CheseCake', 'Zarzamora', 'Grande', 'Redondo', 500, 3),
+('Pastel', 'Vainilla', 'Chico', 'Redondo', 300, 4),
+('Pastel', 'Tres Leches', 'Grande', 'Redondo', 900, 5),
+('Pastel', 'Chocolate', 'Grande', 'Cuadrado', 600, 6),
+('CheseCake', 'Fresa', 'Grande', 'Redondo', 500, 7),
+('CheseCake', 'Pina', 'Grande', 'Redondo', 500, 8),
+('Pastel', 'Tres Leches', 'Grande', 'Redondo', 900, 9),
+('Pastel', 'Tres Leches', 'Grande', 'Redondo', 900, 10);
+
+insert into Pedido(Fecha_Pedido, Fecha_Entrega, Id_Producto) value
+('2023-11-01', '2023-11-06', 1),
+('2023-11-05', '2023-11-11', 2),
+('2023-10-28', '2023-11-05', 3),
+('2023-10-25', '2023-10-31', 4),
+('2023-11-29', '2023-12-05', 5),
+('2023-12-01', '2023-12-05', 6),
+('2023-12-05', '2023-12-10', 7),
+('2023-11-30', '2023-12-06', 8),
+('2023-12-01', '2023-12-08', 9),
+('2023-12-07', '2023-12-14', 10);
+
+insert into Direcciones(Calle, Numero_Exterior, Numero_Interno, Colonia, Municipio, Codigo_Postal) value
+('Fontvil', 10, 501, 'Punta Palermo', 'Tecamac', 55077),
+('Simon Bolivar', 128, 80, 'Jardines de Morelos', 'Ecatepec', 55078),
+('Independencia', 127, 79, 'Las Americas', 'Ecatepec', 55078),
+('Insurgentes', 127, 60, 'Las Americas', 'Ecatepec', 55078),
+('Giusepe', 8, 402, 'Punta Palermo', 'Tecamac', 55077),
+('Modesto Cornelio', 50, 10, 'Campamento 2 de Octubre', 'Iztacalco', 08930),
+('Marea', 10, 201, 'Infonavit', 'Iztacalco', 08900),
+('10 de Marzo', 40, 20, 'Infonavit', 'Iztacalco', 08900),
+('Leona Vicario', 128, 79, 'Las Americas', 'Ecatepec', 55078),
+('Giusepe', 9, 201, 'Montecarlo', 'Tecamac', 55077);
+
+insert into Clientes(Nombre, Apellido, Telefono, Id_Direccion, email, Id_Pedido) value
+('Ricardo', 'Hernandez', '5551566305', 1, 'rhernandezg@gmail.com', 1),
+('Giovanna', 'Perez', '5517877860', 2, 'jackysao@gmail.com', 2),
+('Isabel', 'Flores', '5528235220', 3, 'isaflores10@gmail.com', 3),
+('Jorge', 'Garcia', '5548151623', 4, 'jorgegar15@gmail.com', 4),
+('Alejanro', 'Escorcia', '5510203040', 5, 'alexescorcia@gmail.com', 5),
+('Ramon', 'Cruz', '5532169874', 6, 'rcruzrg@gmail.com', 6),
+('Marco', 'Flores', '5536978215', 7, 'marcof@gmail.com', 7),
+('Alejandra', 'Solorzano', '5531649752', 8, 'alesol33@gmail.com', 8),
+('Diana', 'Trejo', '5515697032', 9, 'dtrejoa08@gmail.com', 9),
+('Yesenia', 'Garcia', '5548151623', 10, 'yesgar@gmail.com', 10);
+
+
+/* AQUI COMIENZA LA CREACION DE VISTAS */
+create view Pagos_en_Efectivo as
+select Metodo_Pago, Nombre, Apellido
+from clientes c
+left join pago p on c.Id_Cliente = p.Id_Pago
+where Metodo_Pago='Efectivo';
+
+create view Tecamac as
+select Colonia, Municipio, Nombre, Apellido
+from clientes c
+left join direcciones d on c.Id_Cliente = d.Id_Direccion
+where Municipio='Tecamac';
+
+create view Pedidos_Pagados as
+select Estado_Pago, Nombre, Apellido
+from clientes c
+left join pago p on c.Id_Cliente = p.Id_Pago
+where Estado_Pago='Pagado';
+
+create view Pasteles as
+select Tipo, Sabor, Nombre, Apellido
+from clientes c
+left join producto pr on c.Id_Cliente = pr.Id_Producto
+where Tipo='Pastel';
+
+create view Costo_Alto as
+select Tipo, Sabor, Precio, Nombre, Apellido
+from clientes c
+left join producto pr on c.Id_Cliente = pr.Id_Producto
+where Precio>500;
+
+
+/* AQUI COMIENZA LA CREACION DE FUNCIONES */
+/* Funcion para saber cual es la forma de pastel mas pedida */
+/* Creacion de la funcion */
+delimiter %
+create function Forma_mas_Pedida (Forma int) returns varchar(15)
+deterministic
+begin
+	declare result varchar(15);
+	if Forma = 1 then
+		set result = 'Menos';
+	end if;
+    
+	if Forma > 1 then
+		set result = 'Mas_Pedido';
+	end if;
+	return result;
+end%
+
+/* Ejecutar la funcion */
+select Forma, Forma_mas_Pedida(FormaP) from (
+select Forma, count(*) FormaP
+from Producto
+group by Forma) as x
+
+/* Funcion para calcular ganancia del pastel 3 leches relleno de flan */
+/* Creacion de la funcion */
+delimiter %
+create function Ganancias_TresLeches_Flan (cantidad int, precio int) returns float
+no sql
+begin
+	declare resultado float;
+    declare precio float;
+    set precio = 900;
+    set resultado = (cantidad * precio);
+    return resultado;
+end%
+
+/* Ejecutar la funcion */
+select Ganancias_TresLeches_Flan (8,900);
+
+
+/* AQUI COMIENZA LA CREACION DE LOS STORED PROCEDURES*/
+/* este SP sirve para insertar registros nuevos en la tabla de Pago */
+delimiter //
+create procedure sp_Inserta_Pagos()
+begin
+	insert into Pago(Metodo_Pago, Estado_Pago) value
+    ('Tarjeta de Credito', 'Pagado');
+    insert into Pago(Metodo_Pago, Estado_Pago) value
+    ('Efectivo', 'Paga la Mitad');
+end//
+
+/* con esta instruccion se realiza la insercion de los registros */
+Call sp_Inserta_Pagos();
+/* ya solo mandamos a traer toda la informacion de la tabla para poder validar */
+select * from Pago;
+
+
+/* este SP sirve para ordenar los precios de los pasteles ya sea de forma ascendente o descendente*/
+delimiter //
+create procedure sp_obtener_precios_ordenados (in orden varchar (4))
+begin
+	set @query = concat( 'select Tipo, precio
+	from producto order by precio ', orden);
+    prepare stmt from @query;
+    execute stmt;
+    deallocate prepare stmt;
+end//
+
+/* con esta consulta nos da la informacion de forma descendente */
+call sp_obtener_precios_ordenados('desc');
+/* con esta consulta nos da la informacion de forma ascendente */
+call sp_obtener_precios_ordenados('asc');
+
+
+/* AQUI COMIENZA LA CREACION DE LOS TRIGGERS */
+/* creacion de la tabla de bitacora en la que se guardaran los datos de quien y cuando se modifiquen los precios */
+create table bitacora_cambio_precios (
+id int primary key auto_increment,
+Usuario varchar (50),
+Fecha_Cambio date,
+Precio_Anterior numeric,
+Precio_Nuevo numeric
+);
+
+/* creacion del trigger de tipo after en el cual se declara la actualizacion del precio en la tabla producto */
+delimiter %
+create trigger cambio_de_precios
+after update on Producto for each row
+begin
+	insert bitacora_cambio_precios (Usuario, Fecha_Cambio, Precio_Anterior, Precio_Nuevo)
+    values (current_user(), now(), old.precio, new.precio);
+end%
+
+/* sentencia para hacer la actualizacion en la tabla de Producto */
+update Producto set Precio = 1000
+where Tipo = 'Pastel' and Sabor = 'Tres Leches' and Tamano = 'Grande';
+
+/* validamos los cambion en la tabla prodcuto */
+select * from Producto;
+/* llamamos la tabla bitacora para poder verificar quien y cuando realizo los cambios */
+select * from bitacora_cambio_precios;
+
+
+/* creacion de la tabla de bitacora en la que se guardaran los datos de quien y cuando se modifiquen los pagos */
+create table actualizacion_de_pagos (
+id int primary key auto_increment,
+Usuario varchar (50),
+Fecha_Cambio date,
+Estado_Anterior varchar (50),
+Nuevo_Estado varchar (50)
+);
+
+/* creacion del trigger de tipo before en el cual se declara la insercion de registros al cambiar el estado de pago en la tabla pago */
+delimiter %
+create trigger movimineto_pagos
+before update on Pago for each row
+begin
+if new.Estado_Pago<>old.Estado_Pago then
+	insert into actualizacion_de_pagos (Usuario, Fecha_Cambio, Estado_Anterior, Nuevo_Estado)
+    values (current_user(), now(), old.Estado_Pago, new.Estado_Pago);
+end if;
+end%
+
+/* sentencia para hacer la actualizacion del estado del pago */
+update Pago set Estado_Pago = 'Pagado'
+where Metodo_Pago = 'Efectivo' and Estado_Pago = 'Paga la Mitad';
+/* sentencia para llamar la tabla y validar los cambios */
+select * from Pago;
+/*sentencia para traer la tabla de bitacora y poder ver quien y cuando actualizo la informacion del pago */
+select * from actualizacion_de_pagos;
+
+
+/*EMPIEZA LA CREACION DE USUARIOS*/
+/*se genera el primer usuario que solo tendra permisos de lectura*/
+create user 'blink'@'localhost' identified by '123456';
+
+/*se crea la conexion a la BD Pasteleria y se le otorgan los permisos de solo lectura*/
+grant select on Pasteleria.*to 'blink'@'localhost';
+
+/*se genera el segundo usuario que tendra permisos de lectura, insercion y modificacion de datos*/
+create user 'kido'@'localhost' identified by '123456';
+
+/*se crea la conexion a la BD Pasteleria y se le otorgan los permisos de lectura, insercion y modificacion de datos*/
+grant select, insert, update on Pasteleria.clientes to 'kido'@'localhost';
+grant select, insert, update on Pasteleria.direcciones to 'kido'@'localhost';
+grant select, insert, update on Pasteleria.pago to 'kido'@'localhost';
+grant select, insert, update on Pasteleria.pedido to 'kido'@'localhost';
+grant select, insert, update on Pasteleria.producto to 'kido'@'localhost';
+grant select on Pasteleria.actualizacion_de_pagos to 'kido'@'localhost';
+grant select on Pasteleria.bitacora_cambio_precios to 'kido'@'localhost';
+grant select on Pasteleria.costo_alto to 'kido'@'localhost';
+grant select on Pasteleria.pagos_en_efectivo to 'kido'@'localhost';
+grant select on Pasteleria.pasteles to 'kido'@'localhost';
+grant select on Pasteleria.pedidos_pagados to 'kido'@'localhost';
+grant select on Pasteleria.tecamac to 'kido'@'localhost';
+
+
+/*EMPIEZA LA CREACION DE LAS TRANSACCIONES*/
+/*Comineza transaccion para eliminar los registros con ID 11, 12, 13 y 14 con la opcion de revertirlo o confirmarlo*/
+start transaction;
+delete from pago where Id_Pago in (11,12,13,14);
+rollback;
+commit;
+
+/*Comienza transaccion para insertar registros y hacer un guardado cada 4 inserciones*/
+start transaction;
+insert Producto values (11, 'Pastel', 'Chocolate', 'Grande', 'Cuadrado', 600, 11);
+insert Producto values (12, 'Pastel', 'Chocolate', 'Grande', 'Redondo', 600, 12);
+insert Producto values (13, 'Pastel', 'Fresa', 'Grande', 'Redondo', 600, 13);
+insert Producto values (14, 'Pastel', 'Vainilla', 'Grande', 'Redondo', 600, 14);
+savepoint lote1;
+insert Producto values (15, 'CheseCake', 'Fresa', 'Grande', 'Redondo', 500, 15);
+insert Producto values (16, 'Brownie', 'Chocolate', 'Grande', 'Cuadrado', 1000, 16);
+insert Producto values (17, 'Flan', 'Napolitano', 'Grande', 'Redondo', 900, 17);
+insert Producto values (18, 'Flan', 'Napolitano', 'Mediano', 'Redondo', 600, 18);
+savepoint lote2;
+rollback to lote1;
+commit;
