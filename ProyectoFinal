@@ -1,5 +1,5 @@
-create schema Pasteleria2;
-use Pateleria2;
+create schema Pasteleria;
+use Pateleria;
 
 /* AQUI EMPIEZA LA CREACION DE LAS TABLAS */
 create table Producto(
