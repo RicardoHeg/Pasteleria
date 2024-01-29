@@ -1,13 +1,7 @@
-create schema Pasteleria;
-use Pateleria;
+create schema Pasteleria2;
+use Pateleria2;
 
 /* AQUI EMPIEZA LA CREACION DE LAS TABLAS */
-create table Pago(
-Id_Pago int primary key auto_increment,
-Metodo_Pago varchar(50) not null,
-Estado_Pago varchar(50) not null
-);
-
 create table Producto(
 Id_Producto int primary key auto_increment,
 Tipo varchar(50) not null,
@@ -15,16 +9,7 @@ Sabor varchar(50) not null,
 Tamano varchar(50) not null,
 Forma varchar(50) not null,
 Precio numeric not null,
-Id_Pago int not null,
-foreign key (Id_Pago) references Pago(Id_Pago)
-);
-
-create table Pedido(
-Id_Pedido int primary key auto_increment,
-Fecha_Pedido datetime not null,
-Fecha_Entrega datetime not null,
-Id_Producto int not null,
-foreign key (Id_Producto) references Producto(Id_Producto)
+Id_Pago int not null
 );
 
 create table Direcciones(
@@ -41,28 +26,31 @@ create table Clientes(
 Id_Cliente int primary key auto_increment,
 Nombre varchar(50) not null,
 Apellido varchar(50) not null,
-Telefono int not null,
+Telefono numeric not null,
 Id_Direccion int not null,
 foreign key (Id_Direccion) references Direcciones(Id_Direccion),
 email varchar(50) not null,
-Id_Pedido int not null,
-foreign key (Id_Pedido) references Pedido(Id_Pedido)
+Id_Pedido int not null
 );
 
+create table Pago(
+Id_Pago int primary key auto_increment,
+Metodo_Pago varchar(50) not null,
+Estado_Pago varchar(50) not null
+);
+
+create table Pedido(
+Id_Pedido int primary key auto_increment,
+Fecha_Pedido datetime not null,
+Fecha_Entrega datetime not null,
+Id_Producto int not null,
+Id_Cliente int not null,
+foreign key (Id_Cliente) references Clientes(Id_Cliente),
+Id_Pago int not null,
+foreign key (Id_Pago) references Pago(Id_Pago)
+);
 
 /* AQUI COMIENZA LA INSERCION DE REGISTROS */
-insert into Pago(Metodo_Pago, Estado_Pago) value
-('Efectivo', 'Pendiente'),
-('Tarjeta de Credito', 'Pagado'),
-('Efectivo', 'Pagado'),
-('Efectivo', 'Paga la mitad'),
-('Tarjeta de Debito', 'Pagado'),
-('Efectivo', 'Pagado'),
-('Tarjeta de Credito', 'Pagado'),
-('Efectivo', 'Pendiente'),
-('Efectivo', 'Pendiente'),
-('Efectivo', 'Pagado');
-
 insert into Producto(Tipo, Sabor, Tamano, Forma, Precio, Id_Pago) value
 ('Pastel', 'Chocolate', 'Grande', 'Cuadrado', 600, 1),
 ('Galletas', 'Vainilla', 'Medianas', 'Esstrella', 800, 2),
@@ -74,18 +62,6 @@ insert into Producto(Tipo, Sabor, Tamano, Forma, Precio, Id_Pago) value
 ('CheseCake', 'Pina', 'Grande', 'Redondo', 500, 8),
 ('Pastel', 'Tres Leches', 'Grande', 'Redondo', 900, 9),
 ('Pastel', 'Tres Leches', 'Grande', 'Redondo', 900, 10);
-
-insert into Pedido(Fecha_Pedido, Fecha_Entrega, Id_Producto) value
-('2023-11-01', '2023-11-06', 1),
-('2023-11-05', '2023-11-11', 2),
-('2023-10-28', '2023-11-05', 3),
-('2023-10-25', '2023-10-31', 4),
-('2023-11-29', '2023-12-05', 5),
-('2023-12-01', '2023-12-05', 6),
-('2023-12-05', '2023-12-10', 7),
-('2023-11-30', '2023-12-06', 8),
-('2023-12-01', '2023-12-08', 9),
-('2023-12-07', '2023-12-14', 10);
 
 insert into Direcciones(Calle, Numero_Exterior, Numero_Interno, Colonia, Municipio, Codigo_Postal) value
 ('Fontvil', 10, 501, 'Punta Palermo', 'Tecamac', 55077),
@@ -110,6 +86,30 @@ insert into Clientes(Nombre, Apellido, Telefono, Id_Direccion, email, Id_Pedido)
 ('Alejandra', 'Solorzano', '5531649752', 8, 'alesol33@gmail.com', 8),
 ('Diana', 'Trejo', '5515697032', 9, 'dtrejoa08@gmail.com', 9),
 ('Yesenia', 'Garcia', '5548151623', 10, 'yesgar@gmail.com', 10);
+
+insert into Pago(Metodo_Pago, Estado_Pago) value
+('Efectivo', 'Pendiente'),
+('Tarjeta de Credito', 'Pagado'),
+('Efectivo', 'Pagado'),
+('Efectivo', 'Paga la mitad'),
+('Tarjeta de Debito', 'Pagado'),
+('Efectivo', 'Pagado'),
+('Tarjeta de Credito', 'Pagado'),
+('Efectivo', 'Pendiente'),
+('Efectivo', 'Pendiente'),
+('Efectivo', 'Pagado');
+
+insert into Pedido(Fecha_Pedido, Fecha_Entrega, Id_Producto, Id_Cliente, Id_Pago) value
+('2023-11-01', '2023-11-06', 1, 1, 1),
+('2023-11-05', '2023-11-11', 2, 2, 2),
+('2023-10-28', '2023-11-05', 3, 3, 3),
+('2023-10-25', '2023-10-31', 4, 4, 4),
+('2023-11-29', '2023-12-05', 5, 5, 5),
+('2023-12-01', '2023-12-05', 6, 6, 6),
+('2023-12-05', '2023-12-10', 7, 7, 7),
+('2023-11-30', '2023-12-06', 8, 8, 8),
+('2023-12-01', '2023-12-08', 9, 9, 9),
+('2023-12-07', '2023-12-14', 10, 10, 10);
 
 
 /* AQUI COMIENZA LA CREACION DE VISTAS */
